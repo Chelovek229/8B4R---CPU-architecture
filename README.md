@@ -1,2 +1,78 @@
-# 8B4R---CPU-architecture
-A modular 8-bit CPU emulator with 4 registers, RAM, a minimal instruction set, custom assembler and disassembler, built in C++ for Visual Studio. Designed for learning, expansion, and potential FPGA implementation.
+﻿# # 🔧 8-bit Custom CPU Emulator
+
+Эмулятор и инструментальная среда для отладки и тестирования пользовательской 8-битной архитектуры процессора, разработанной на C++ в среде Visual Studio. Проект включает:
+
+- Реализацию архитектуры процессора с 4 регистрами
+- Строгую структуру инструкций (ISA)
+- Консольный ассемблер `.asm → .bin`
+- Дизассемблер `.bin → инструкции`
+- HEX-дамп и лог исполнения
+- Расширяемую модульную архитектуру
+
+---
+
+## 🧠 Архитектура процессора
+
+### Регистры
+
+| Имя | Размер | Назначение |
+|-----|--------|------------|
+| A   | 8 бит  | Основной аккумулятор |
+| B   | 8 бит  | Вспомогательный регистр |
+| C   | 8 бит  | Общего назначения |
+| D   | 8 бит  | Общего назначения |
+| PC  | 8 бит  | Program Counter — указывает на текущую инструкцию |
+| FLAGS | 8 бит *(будет)* | Флаги: Zero, Carry, Sign и др. *(в разработке)* |
+
+---
+
+### Память
+
+- **RAM**: 256 байт
+- Адресуется от `0x00` до `0xFF`
+- Программа загружается с адреса `0x00`
+
+---
+
+### Поддерживаемые инструкции (ISA)
+
+| Мнемоника    | Opcode | Описание                     |
+|--------------|--------|------------------------------|
+| `NOP`        | 0x00   | Пустая операция              |
+| `MOV A, B`   | 0x01   | Копирует значение из B в A  |
+| `ADD A, B`   | 0x02   | Складывает A и B, результат в A |
+| `INC A`      | 0x03   | Увеличивает A на 1          |
+| `HLT`        | 0xFF   | Останавливает выполнение    |
+
+> 💡 Архитектура легко расширяется — можно добавить `JMP`, `SUB`, `MOV A, [addr]`, `CALL`, `RET` и даже I/O порты через `IN/OUT`.
+
+---
+
+## 📂 Структура проекта
+
+8B4R/ ├── include/ │ ├── cpu.hpp │ ├── instructions.hpp │ ├── assembler.hpp │ └── disassembler.hpp │ ├── src/ │ ├── main.cpp │ ├── cpu.cpp │ ├── instructions.cpp │ ├── assembler.cpp │ └── disassembler.cpp │ ├── tools/ │ ├── test_program.asm │ ├── test_program.bin │ └── generate_test_bin.cpp │ ├── output/ │ ├── log.txt │ └── memory_dump.txt │ └── README.md
+
+
+---
+
+## 🛠 Сборка
+
+### 🔹 Visual Studio
+
+1. Открой `8B4R.sln` или создай консольный проект
+2. Добавь все `.cpp` и `include/*.hpp` файлы в проект
+3. Укажи путь к папке `include` как **additional include directories**
+4. Собери и запусти проект
+
+---
+
+## ⚙️ Использование
+
+### Сборка программы
+
+```asm
+; tools/test_program.asm
+MOV A, B
+ADD A, B
+INC A
+HLT

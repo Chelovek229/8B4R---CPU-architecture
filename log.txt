@@ -1,0 +1,4 @@
+﻿[PC: 00] 0x01 → MOV A, B     | A=00 B=05 C=00 D=00
+[PC: 01] 0x02 → ADD A, B     | A=05 B=05 C=00 D=00
+[PC: 02] 0x03 → INC A        | A=0A B=05 C=00 D=00
+[PC: 03] 0xFF → HLT          | A=0B B=05 C=00 D=00
