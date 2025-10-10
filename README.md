@@ -100,6 +100,6 @@ ADD A, B
 INC A
 HLT
 
-### - Badges
+## - Badges
 ![🟊 Curator](https://img.shields.io/badge/Role-Curator-yellow?style=flat-square)
 ![💻 Coder](https://img.shields.io/badge/Role-Coder-blue?style=flat-square)
