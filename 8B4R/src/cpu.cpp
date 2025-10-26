@@ -1,6 +1,29 @@
 #include "cpu.hpp"
-#include <iostream>
-#include "instructions.hpp"
+#include "control_unit.hpp"
+
+CPU::CPU(size_t programSize, size_t dataSize)
+    : pc(0), sp(0), flags(0), halted(false), bus(programSize, dataSize) {}
+
+void CPU::step() {
+    if (halted) return;
+
+    timer.tick();
+    if (timer.interrupt_flag) {
+        intc.request(0x10); // примерный вектор таймера
+        timer.interrupt_flag = false;
+    }
+
+    if (intc.is_pending()) {
+        // Сохраняем PC в стек, переходим по вектору
+        stack.push(pc);
+        pc = intc.irq_vector;
+        intc.clear();
+        return;
+    }
+
+    uint8_t opcode = bus.programMemory.read(pc++);
+    ControlUnit::execute(*this, static_cast<Instruction>(opcode));
+}
 
 void CPU::load_program(const uint8_t* program, size_t size) {
     for (size_t i = 0; i < size && i < 256; ++i)
@@ -9,19 +32,9 @@ void CPU::load_program(const uint8_t* program, size_t size) {
 
 void CPU::execute(bool verbose) {
     while (!halted) {
-        Instruction inst = static_cast<Instruction>(RAM[PC++]);
-
-        if (verbose)
-            std::cout << "[" << (int)(PC - 1) << "] "
-            << instruction_to_string(inst) << "\n";
-
-        switch (inst) {
-        case Instruction::NOP: break;
-        case Instruction::MOV_A_B: A = B; break;
-        case Instruction::ADD_A_B: A += B; break;
-        case Instruction::INC_A: ++A; break;
-        case Instruction::HLT: halted = true; break;
-        default: halted = true; break;
+        step();
+        if (verbose) {
+            // Можно добавить вывод состояния регистров, памяти, периферии      
         }
     }
 }
