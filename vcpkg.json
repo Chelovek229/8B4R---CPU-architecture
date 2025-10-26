@@ -1,0 +1,12 @@
+{
+  "name": "8b4r-cpu-emulator",
+  "version": "1.0.0",
+  "description": "Ёмул€тор и инструментальна€ среда дл€ 8-битной архитектуры процессора с GUI и периферией.",
+  "dependencies": [
+    "sdl2",
+    "imgui",
+    "fmt",
+    "catch2"
+  ],
+  "builtin-baseline": "c7b6e8e2b6e2b6e2b6e2b6e2b6e2b6e2b6e2b6e2"
+}
